@@ -17,9 +17,11 @@ class RepositoryImpl implements ContactRepopsitory {
   };
   Dio dio = Dio();
   @override
-  deleteContacts(String id) {
-    // TODO: implement deleteContacts
-    throw UnimplementedError();
+  deleteContacts(String id) async {
+    await dio.delete(
+      '$baseUrl/$id',
+      options: Options(headers: headers),
+    );
   }
 
   @override
