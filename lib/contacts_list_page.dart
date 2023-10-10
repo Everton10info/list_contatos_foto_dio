@@ -62,9 +62,12 @@ class _ListContactsPageState extends State<ListContactsPage> {
                         height: 60,
                         width: 60,
                         child: CircleAvatar(
-                            backgroundImage: Image.file(
-                          File(vm.listContacts[index].picture),
-                        ).image),
+                            foregroundImage: Image.file(
+                              File(vm.listContacts[index].picture),
+                            ).image,
+                            backgroundImage: Image.network(
+                                    'https://icons-for-free.com/iconfiles/png/512/add+avatar+human+man+profile+icon-1320085876593184757.png')
+                                .image),
                       ),
                       title: Text(
                         vm.listContacts[index].name.toUpperCase(),
