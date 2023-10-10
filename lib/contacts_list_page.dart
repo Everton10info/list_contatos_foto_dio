@@ -43,58 +43,60 @@ class _ListContactsPageState extends State<ListContactsPage> {
         body: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Consumer<ContactsVM>(builder: (context, vm, child) {
-            return ListView.builder(
-              itemCount: vm.listContacts.length,
-              itemBuilder: (context, index) {
-                return Dismissible(
-                  key: ValueKey(vm.listContacts[index].objectId),
-                  onDismissed: (_) =>
-                      vm.deleteContact(vm.listContacts[index].objectId!),
-                  child: Container(
-                    margin: const EdgeInsets.all(2),
-                    padding: const EdgeInsets.symmetric(vertical: 8),
-                    decoration: BoxDecoration(
-                        color: Colors.purple.shade50,
-                        borderRadius:
-                            const BorderRadius.all(Radius.circular(20))),
-                    child: ListTile(
-                      leading: SizedBox(
-                          height: 60,
-                          width: 60,
-                          child: CircleAvatar(
-                              foregroundImage: Image.file(
-                                File(vm.listContacts[index].picture),
-                              ).image,
-                              backgroundImage: Image.network(
-                                      'https://cdn4.iconfinder.com/data/icons/meBaze-Freebies/512/add-user.png')
-                                  .image)),
-                      title: Text(
-                        vm.listContacts[index].name.toUpperCase(),
-                        style: const TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w500,
-                            overflow: TextOverflow.fade),
-                      ),
-                      trailing: IconButton(
-                        icon: const Icon(
-                          Icons.edit,
+            return vm.loader
+                ? const Center(child: CircularProgressIndicator())
+                : ListView.builder(
+                    itemCount: vm.listContacts.length,
+                    itemBuilder: (context, index) {
+                      return Dismissible(
+                        key: ValueKey(vm.listContacts[index].objectId),
+                        onDismissed: (_) =>
+                            vm.deleteContact(vm.listContacts[index].objectId!),
+                        child: Container(
+                          margin: const EdgeInsets.all(2),
+                          padding: const EdgeInsets.symmetric(vertical: 8),
+                          decoration: BoxDecoration(
+                              color: Colors.purple.shade50,
+                              borderRadius:
+                                  const BorderRadius.all(Radius.circular(20))),
+                          child: ListTile(
+                            leading: SizedBox(
+                                height: 60,
+                                width: 60,
+                                child: CircleAvatar(
+                                    foregroundImage: Image.file(
+                                      File(vm.listContacts[index].picture),
+                                    ).image,
+                                    backgroundImage: Image.network(
+                                            'https://cdn4.iconfinder.com/data/icons/meBaze-Freebies/512/add-user.png')
+                                        .image)),
+                            title: Text(
+                              vm.listContacts[index].name.toUpperCase(),
+                              style: const TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w500,
+                                  overflow: TextOverflow.fade),
+                            ),
+                            trailing: IconButton(
+                              icon: const Icon(
+                                Icons.edit,
+                              ),
+                              onPressed: () {
+                                showDialog(
+                                    context: context,
+                                    builder: (context) {
+                                      return customDialog(
+                                          'Editar contato',
+                                          vm.listContacts[index],
+                                          vm.listContacts[index].picture);
+                                    });
+                              },
+                            ),
+                          ),
                         ),
-                        onPressed: () {
-                          showDialog(
-                              context: context,
-                              builder: (context) {
-                                return customDialog(
-                                    'Editar contato',
-                                    vm.listContacts[index],
-                                    vm.listContacts[index].picture);
-                              });
-                        },
-                      ),
-                    ),
-                  ),
-                );
-              },
-            );
+                      );
+                    },
+                  );
           }),
         ),
         floatingActionButton: FloatingActionButton(
@@ -159,8 +161,8 @@ class _ListContactsPageState extends State<ListContactsPage> {
                                   },
                                   child: CircleAvatar(
                                       backgroundImage: Image.network(
-                                              'https://cdn4.iconfinder.com/data/icons/meBaze-Freebies/512/add-user.png')
-                                          .image,
+                                        'https://cdn4.iconfinder.com/data/icons/meBaze-Freebies/512/add-user.png',
+                                      ).image,
                                       foregroundImage: Image.file(
                                         height: 20,
                                         fit: BoxFit.scaleDown,

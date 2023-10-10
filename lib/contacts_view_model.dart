@@ -8,30 +8,41 @@ class ContactsVM extends ChangeNotifier {
   List<ContactModel> listContacts = [];
   ContactRepopsitory repository = RepositoryImpl();
   XFile? file;
+  bool loader = true;
 
   void takePhoto() async {
     file = await ImagePickerCustomer.take();
     notifyListeners();
   }
 
+  void loaderChange(bool boolean) {
+    loader = boolean;
+    notifyListeners();
+  }
+
   void addContact(String name, String picture) async {
+    loaderChange(true);
     await repository.createContact(ContactModel(picture: picture, name: name));
+
     await showContacts();
   }
 
   void editContact(String name, String picture, String id) {
+    loaderChange(true);
     ContactModel contactModel = ContactModel(
       picture: picture,
       name: name,
       objectId: id,
     );
     repository.editContact(contactModel);
+
     showContacts();
   }
 
   Future<void> showContacts() async {
     await Future.delayed(const Duration(seconds: 1));
     listContacts = await repository.getContacts();
+    loaderChange(false);
     notifyListeners();
   }
 
