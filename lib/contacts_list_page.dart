@@ -59,16 +59,15 @@ class _ListContactsPageState extends State<ListContactsPage> {
                             const BorderRadius.all(Radius.circular(20))),
                     child: ListTile(
                       leading: SizedBox(
-                        height: 60,
-                        width: 60,
-                        child: CircleAvatar(
-                            foregroundImage: Image.file(
-                              File(vm.listContacts[index].picture),
-                            ).image,
-                            backgroundImage: Image.network(
-                                    'https://icons-for-free.com/iconfiles/png/512/add+avatar+human+man+profile+icon-1320085876593184757.png')
-                                .image),
-                      ),
+                          height: 60,
+                          width: 60,
+                          child: CircleAvatar(
+                              foregroundImage: Image.file(
+                                File(vm.listContacts[index].picture),
+                              ).image,
+                              backgroundImage: Image.network(
+                                      'https://cdn4.iconfinder.com/data/icons/meBaze-Freebies/512/add-user.png')
+                                  .image)),
                       title: Text(
                         vm.listContacts[index].name.toUpperCase(),
                         style: const TextStyle(
@@ -159,10 +158,14 @@ class _ListContactsPageState extends State<ListContactsPage> {
                                     vm.takePhoto();
                                   },
                                   child: CircleAvatar(
-                                      backgroundImage: Image.file(
-                                    fit: BoxFit.scaleDown,
-                                    File(vm.file?.path ?? file!),
-                                  ).image),
+                                      backgroundImage: Image.network(
+                                              'https://cdn4.iconfinder.com/data/icons/meBaze-Freebies/512/add-user.png')
+                                          .image,
+                                      foregroundImage: Image.file(
+                                        height: 20,
+                                        fit: BoxFit.scaleDown,
+                                        File(vm.file?.path ?? file!),
+                                      ).image),
                                 ),
                               ),
                             );
