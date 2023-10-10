@@ -4,8 +4,8 @@ import 'package:dio/dio.dart';
 abstract interface class ContactRepopsitory {
   Future<void> createContact(ContactModel contact);
   Future<List<ContactModel>> getContacts();
-  deleteContacts(String id);
-  Future<ContactModel> editContact(ContactModel contact);
+  void deleteContacts(String id);
+  void editContact(ContactModel contact);
 }
 
 class RepositoryImpl implements ContactRepopsitory {
@@ -25,9 +25,12 @@ class RepositoryImpl implements ContactRepopsitory {
   }
 
   @override
-  editContact(ContactModel contact) {
-    // TODO: implement editContact
-    throw UnimplementedError();
+  editContact(ContactModel contact) async {
+    await dio.put(
+      data: ContactModel.toJson(contact),
+      '$baseUrl/${contact.objectId}',
+      options: Options(headers: headers),
+    );
   }
 
   @override

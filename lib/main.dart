@@ -1,10 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:list_contatos_foto_dio/contacts_view_model.dart';
+import 'package:provider/provider.dart';
 
 import 'contacts_list_page.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => ContactsVM()),
+      ],
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
