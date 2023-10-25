@@ -1,13 +1,14 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:list_contatos_foto_dio/contacts_model.dart';
-import 'package:list_contatos_foto_dio/contacts_view_model.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
+
+import '../controllers/contacts_controller.dart';
+import '../models/contacts_model.dart';
 
 class ListContactsPage extends StatefulWidget {
   const ListContactsPage({super.key, required this.viewModel});
-  final ContactsVM viewModel;
+  final ControllerContacts viewModel;
 
   @override
   State<ListContactsPage> createState() => _ListContactsPageState();
@@ -15,12 +16,12 @@ class ListContactsPage extends StatefulWidget {
 
 class _ListContactsPageState extends State<ListContactsPage> {
   final textEditingController = TextEditingController();
-  late final ContactsVM vm;
+  late final ControllerContacts vm;
   final _formKey = GlobalKey<FormState>();
 
   @override
   void initState() {
-    vm = context.read<ContactsVM>();
+    vm = ControllerContacts();
     vm.showContacts();
     super.initState();
   }
@@ -41,64 +42,63 @@ class _ListContactsPageState extends State<ListContactsPage> {
           ),
         ),
         body: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Consumer<ContactsVM>(builder: (context, vm, child) {
-            return vm.loader
-                ? const Center(child: CircularProgressIndicator())
-                : ListView.builder(
-                    itemCount: vm.listContacts.length,
-                    itemBuilder: (context, index) {
-                      return Dismissible(
-                        key: ValueKey(vm.listContacts[index].objectId),
-                        onDismissed: (_) =>
-                            vm.deleteContact(vm.listContacts[index].objectId!),
-                        child: Container(
-                          margin: const EdgeInsets.all(2),
-                          padding: const EdgeInsets.symmetric(vertical: 8),
-                          decoration: BoxDecoration(
-                              color: Colors.purple.shade50,
-                              borderRadius:
-                                  const BorderRadius.all(Radius.circular(20))),
-                          child: ListTile(
-                            leading: SizedBox(
-                                height: 60,
-                                width: 60,
-                                child: CircleAvatar(
-                                    foregroundImage: Image.file(
-                                      File(vm.listContacts[index].picture),
-                                    ).image,
-                                    backgroundImage: Image.network(
-                                            'https://cdn4.iconfinder.com/data/icons/meBaze-Freebies/512/add-user.png')
-                                        .image)),
-                            title: Text(
-                              vm.listContacts[index].name.toUpperCase(),
-                              style: const TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w500,
-                                  overflow: TextOverflow.fade),
-                            ),
-                            trailing: IconButton(
-                              icon: const Icon(
-                                Icons.edit,
+            padding: const EdgeInsets.all(8.0),
+            child: Observer(builder: (BuildContext context) {
+              return vm.loader
+                  ? const Center(child: CircularProgressIndicator())
+                  : ListView.builder(
+                      itemCount: vm.listContacts.length,
+                      itemBuilder: (context, index) {
+                        return Dismissible(
+                          key: ValueKey(vm.listContacts[index].objectId),
+                          onDismissed: (_) => vm
+                              .deleteContact(vm.listContacts[index].objectId!),
+                          child: Container(
+                            margin: const EdgeInsets.all(2),
+                            padding: const EdgeInsets.symmetric(vertical: 8),
+                            decoration: BoxDecoration(
+                                color: Colors.purple.shade50,
+                                borderRadius: const BorderRadius.all(
+                                    Radius.circular(20))),
+                            child: ListTile(
+                              leading: SizedBox(
+                                  height: 60,
+                                  width: 60,
+                                  child: CircleAvatar(
+                                      foregroundImage: Image.file(
+                                        File(vm.listContacts[index].picture),
+                                      ).image,
+                                      backgroundImage: Image.network(
+                                              'https://cdn4.iconfinder.com/data/icons/meBaze-Freebies/512/add-user.png')
+                                          .image)),
+                              title: Text(
+                                vm.listContacts[index].name.toUpperCase(),
+                                style: const TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w500,
+                                    overflow: TextOverflow.fade),
                               ),
-                              onPressed: () {
-                                showDialog(
-                                    context: context,
-                                    builder: (context) {
-                                      return customDialog(
-                                          'Editar contato',
-                                          vm.listContacts[index],
-                                          vm.listContacts[index].picture);
-                                    });
-                              },
+                              trailing: IconButton(
+                                icon: const Icon(
+                                  Icons.edit,
+                                ),
+                                onPressed: () {
+                                  showDialog(
+                                      context: context,
+                                      builder: (context) {
+                                        return customDialog(
+                                            'Editar contato',
+                                            vm.listContacts[index],
+                                            vm.listContacts[index].picture);
+                                      });
+                                },
+                              ),
                             ),
                           ),
-                        ),
-                      );
-                    },
-                  );
-          }),
-        ),
+                        );
+                      },
+                    );
+            })),
         floatingActionButton: FloatingActionButton(
           onPressed: () {
             showDialog(
@@ -139,8 +139,8 @@ class _ListContactsPageState extends State<ListContactsPage> {
                         }
                         return null;
                       }),
-                  Consumer<ContactsVM>(
-                    builder: (context, vm, child) {
+                  Observer(
+                    builder: (_) {
                       return (file == null && vm.file == null)
                           ? IconButton(
                               icon: const Icon(

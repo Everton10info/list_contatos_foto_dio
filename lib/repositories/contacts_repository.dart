@@ -1,4 +1,4 @@
-import 'package:list_contatos_foto_dio/contacts_model.dart';
+import 'package:list_contatos_foto_dio/models/contacts_model.dart';
 import 'package:dio/dio.dart';
 
 abstract interface class ContactRepopsitory {

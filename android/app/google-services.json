@@ -1,0 +1,82 @@
+{
+  "project_info": {
+    "project_number": "248786464044",
+    "project_id": "pocs-460c9",
+    "storage_bucket": "pocs-460c9.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:248786464044:android:d0fd62d0098ca906cbd089",
+        "android_client_info": {
+          "package_name": "com.example.list_contatos_foto_dio"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "248786464044-a8luvlb3vtuv8v3sm83go9ggnv5o9535.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDTuz1mKgE9PZf0Su6oNC1fQ-E93f685d8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "248786464044-a8luvlb3vtuv8v3sm83go9ggnv5o9535.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "248786464044-rrgkkvtrjd2gv3cq39lnu8pg3tqjpfbb.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.pocPushNotification"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:248786464044:android:103660c9f4ded6d5cbd089",
+        "android_client_info": {
+          "package_name": "com.example.poc_push_notification"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "248786464044-a8luvlb3vtuv8v3sm83go9ggnv5o9535.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDTuz1mKgE9PZf0Su6oNC1fQ-E93f685d8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "248786464044-a8luvlb3vtuv8v3sm83go9ggnv5o9535.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "248786464044-rrgkkvtrjd2gv3cq39lnu8pg3tqjpfbb.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.pocPushNotification"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
