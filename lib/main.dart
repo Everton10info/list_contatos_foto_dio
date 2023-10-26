@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:list_contatos_foto_dio/pages/login_page.dart';
+import 'package:list_contatos_foto_dio/pages/splash_page.dart';
 import 'services/firebase_options.dart';
 
 void main() async {
@@ -24,6 +25,6 @@ class MyApp extends StatelessWidget {
           useMaterial3: true,
           primaryColor: Colors.purple,
         ),
-        home: const LoginPage());
+        home: const SplashPage());
   }
 }

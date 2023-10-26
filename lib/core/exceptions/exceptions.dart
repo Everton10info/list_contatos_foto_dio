@@ -17,7 +17,15 @@ class AppExceptionInvalideCredencial extends AppException {
   AppExceptionInvalideCredencial([super.message]);
   @override
   String getMessage() {
-    return 'Credenciais inválidas!!';
+    return 'Email ou senha inválidos!';
+  }
+}
+
+class AppExceptionCreateError extends AppException {
+  AppExceptionCreateError();
+  @override
+  String getMessage() {
+    return 'Erro ao criar usuário, por favor tente mais tarde';
   }
 }
 
@@ -25,6 +33,6 @@ class AppExceptionServerError extends AppException {
   AppExceptionServerError();
   @override
   String getMessage() {
-    return 'Erro no servidor, tente mais tarde';
+    return 'Erro no servidor, por favor tente mais tarde';
   }
 }

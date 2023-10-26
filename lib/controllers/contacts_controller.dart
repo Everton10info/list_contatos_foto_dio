@@ -1,5 +1,7 @@
 import 'package:image_picker/image_picker.dart';
+import 'package:list_contatos_foto_dio/repositories/auth_repository.dart';
 import 'package:list_contatos_foto_dio/repositories/contacts_repository.dart';
+import 'package:list_contatos_foto_dio/services/auth_service.dart';
 import 'package:mobx/mobx.dart';
 import '../services/cam_services.dart';
 import '../models/contacts_model.dart';
@@ -57,5 +59,10 @@ abstract class _ControllerContacts with Store {
   void deleteContact(String id) async {
     repository.deleteContacts(id);
     await showContacts();
+  }
+
+  void logOut() async {
+    var rep = AuthRepositoryImpl(service: AuthService());
+    rep.logOut();
   }
 }

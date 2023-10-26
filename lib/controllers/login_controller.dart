@@ -1,9 +1,9 @@
-import 'package:list_contatos_foto_dio/core/enums/login_enum.dart';
-import 'package:list_contatos_foto_dio/exceptions/exceptions.dart';
-import 'package:list_contatos_foto_dio/repositories/login_repository.dart';
+import '../core/enums/login_enum.dart';
+import '../core/exceptions/exceptions.dart';
+import '../repositories/auth_repository.dart';
 
 class LoginController {
-  final LoginRepository loginRepository;
+  final AuthRepository loginRepository;
 
   LoginController({
     required this.loginRepository,
@@ -14,6 +14,17 @@ class LoginController {
 
       if (result == LoginState.loggedIn) return LoginState.loggedIn.name;
       return LoginState.loggedOut.name;
+    } on AppException catch (e) {
+      return e.getMessage();
+    }
+  }
+
+  Future<String?> createUser(String email, String password) async {
+    try {
+      final result = await loginRepository.register(email, password);
+
+      if (result == 'ok') return result;
+      return '';
     } on AppException catch (e) {
       return e.getMessage();
     }

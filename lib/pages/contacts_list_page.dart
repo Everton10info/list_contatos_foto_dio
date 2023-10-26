@@ -2,20 +2,21 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-
+import 'package:list_contatos_foto_dio/models/user.dart';
+import 'package:list_contatos_foto_dio/pages/login_page.dart';
 import '../controllers/contacts_controller.dart';
 import '../models/contacts_model.dart';
 
 class ListContactsPage extends StatefulWidget {
-  const ListContactsPage({super.key, required this.viewModel});
-  final ControllerContacts viewModel;
+  const ListContactsPage({super.key, required this.controller});
+  final ControllerContacts controller;
 
   @override
   State<ListContactsPage> createState() => _ListContactsPageState();
 }
 
 class _ListContactsPageState extends State<ListContactsPage> {
-  final textEditingController = TextEditingController();
+  final _textEditingController = TextEditingController();
   late final ControllerContacts vm;
   final _formKey = GlobalKey<FormState>();
 
@@ -27,18 +28,55 @@ class _ListContactsPageState extends State<ListContactsPage> {
   }
 
   @override
+  void dispose() {
+    _textEditingController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
-          backgroundColor: const Color.fromARGB(255, 152, 60, 198),
-          title: const Center(
-            child: Text(
-              'CONTACTS',
-              style: TextStyle(
-                fontWeight: FontWeight.w900,
-              ),
+          actions: [
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Icon(
+                  Icons.account_circle_rounded,
+                  color: Colors.blue,
+                ),
+                SizedBox(
+                  width: 64,
+                  child: Text(
+                    textAlign: TextAlign.center,
+                    overflow: TextOverflow.ellipsis,
+                    UserApp.userName ?? '',
+                    style: const TextStyle(
+                        color: Colors.blueAccent, fontWeight: FontWeight.bold),
+                  ),
+                ),
+              ],
             ),
+            IconButton(
+                onPressed: () {
+                  widget.controller.logOut();
+                  Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const LoginPage(),
+                      ));
+                },
+                icon: const Icon(
+                  Icons.logout_sharp,
+                  color: Colors.blueAccent,
+                ))
+          ],
+          backgroundColor: const Color.fromARGB(255, 152, 60, 198),
+          title: const Text(
+            'CONTACTS',
+            style: TextStyle(
+                fontWeight: FontWeight.w900, color: Colors.blueAccent),
           ),
         ),
         body: Padding(
@@ -107,7 +145,10 @@ class _ListContactsPageState extends State<ListContactsPage> {
                   return customDialog('Cadastrar Contato');
                 });
           },
-          child: const Icon(Icons.add),
+          child: const Icon(
+            Icons.add,
+            color: Colors.blueAccent,
+          ),
         ),
       ),
     );
@@ -118,7 +159,7 @@ class _ListContactsPageState extends State<ListContactsPage> {
     ContactModel? contact,
     String? file,
   ]) {
-    textEditingController.text = contact?.name ?? '';
+    _textEditingController.text = contact?.name ?? '';
     String? file = contact?.picture;
 
     return AlertDialog(
@@ -132,7 +173,7 @@ class _ListContactsPageState extends State<ListContactsPage> {
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   TextFormField(
-                      controller: textEditingController,
+                      controller: _textEditingController,
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return 'Insira nome válido!';
@@ -190,14 +231,14 @@ class _ListContactsPageState extends State<ListContactsPage> {
             }
 
             contact?.objectId == null
-                ? vm.addContact(textEditingController.text, vm.file!.path)
+                ? vm.addContact(_textEditingController.text, vm.file!.path)
                 : vm.editContact(
-                    textEditingController.text,
+                    _textEditingController.text,
                     vm.file?.path ?? contact!.picture,
                     contact!.objectId!,
                   );
             vm.file = null;
-            textEditingController.text = '';
+            _textEditingController.text = '';
 
             Navigator.of(context).pop();
           },

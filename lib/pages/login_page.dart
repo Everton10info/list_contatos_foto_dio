@@ -3,8 +3,8 @@ import 'package:list_contatos_foto_dio/controllers/contacts_controller.dart';
 import 'package:list_contatos_foto_dio/controllers/login_controller.dart';
 import 'package:list_contatos_foto_dio/core/enums/login_enum.dart';
 import 'package:list_contatos_foto_dio/pages/contacts_list_page.dart';
-import 'package:list_contatos_foto_dio/repositories/login_repository.dart';
-import 'package:list_contatos_foto_dio/services/login_service.dart';
+import 'package:list_contatos_foto_dio/repositories/auth_repository.dart';
+import 'package:list_contatos_foto_dio/services/auth_service.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -14,9 +14,19 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  final _emailcontrolller = TextEditingController();
-  final _passwordCOntrller = TextEditingController();
+  final _emailcontroller = TextEditingController();
+  final _passwordController = TextEditingController();
+  final _passwordConfirmController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
+  bool screenLogin = true;
+  @override
+  void dispose() {
+    _emailcontroller.dispose();
+    _passwordController.dispose();
+    _passwordConfirmController.dispose();
+
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -26,21 +36,21 @@ class _LoginPageState extends State<LoginPage> {
           key: _formKey,
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 24),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
+            child: ListView(
               children: [
                 const SizedBox(
                   height: 40,
                 ),
-                const Text(
-                  'Login',
-                  style: TextStyle(fontSize: 36, fontWeight: FontWeight.w500),
+                Text(
+                  screenLogin ? 'Login' : 'Cadastrar',
+                  style: const TextStyle(
+                      fontSize: 36, fontWeight: FontWeight.w500),
                 ),
                 const SizedBox(
                   height: 40,
                 ),
                 TextFormField(
-                  controller: _emailcontrolller,
+                  controller: _emailcontroller,
                   decoration: const InputDecoration(
                     alignLabelWithHint: true,
                     label: Text('Email'),
@@ -64,7 +74,7 @@ class _LoginPageState extends State<LoginPage> {
                   height: 24,
                 ),
                 TextFormField(
-                  controller: _passwordCOntrller,
+                  controller: _passwordController,
                   decoration: const InputDecoration(
                     alignLabelWithHint: true,
                     label: Text('Password'),
@@ -82,29 +92,90 @@ class _LoginPageState extends State<LoginPage> {
                   },
                 ),
                 const SizedBox(
+                  height: 24,
+                ),
+                Visibility(
+                  visible: screenLogin == false,
+                  child: TextFormField(
+                    controller: _passwordConfirmController,
+                    decoration: const InputDecoration(
+                      alignLabelWithHint: true,
+                      label: Text('Confirm Password'),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(28),
+                        ),
+                      ),
+                    ),
+                    validator: (value) {
+                      if (value == null ||
+                          value.isEmpty ||
+                          value.length < 8 ||
+                          value != _passwordController.text) {
+                        return 'As senhas não são iguais';
+                      }
+                      return null;
+                    },
+                  ),
+                ),
+                const SizedBox(
                   height: 40,
                 ),
                 ElevatedButton(
-                    onPressed: _onPressed, child: const Text('Login'))
+                  onPressed: screenLogin ? _onPressedLogin : _onPressedRegister,
+                  child: Text(
+                    screenLogin ? 'Login' : 'Rgister',
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+                const SizedBox(
+                  height: 40,
+                ),
+                Visibility(
+                  visible: screenLogin == true,
+                  child: TextButton(
+                      onPressed: () {
+                        screenLogin = false;
+                        setState(() {});
+                      },
+                      child: const Text('Quero me registrar')),
+                )
               ],
             ),
           )),
     );
   }
 
-  void _onPressed() {
+  void _onPressedLogin() {
     if (!_formKey.currentState!.validate()) return;
     final controller = LoginController(
-      loginRepository: LoginrepositoryImpl(service: LoginService()),
+      loginRepository: AuthRepositoryImpl(service: AuthService()),
     );
     controller
-        .signUp(_emailcontrolller.text, _passwordCOntrller.text)
+        .signUp(_emailcontroller.text, _passwordController.text)
         .then((value) {
       if (value == LoginState.loggedIn.name) {
         Navigator.of(context).pushReplacement(MaterialPageRoute(
           builder: (context) =>
-              ListContactsPage(viewModel: ControllerContacts()),
+              ListContactsPage(controller: ControllerContacts()),
         ));
+      } else {
+        snackBarCustom(value!);
+      }
+    });
+  }
+
+  void _onPressedRegister() {
+    if (!_formKey.currentState!.validate()) return;
+    final controller = LoginController(
+      loginRepository: AuthRepositoryImpl(service: AuthService()),
+    );
+    controller
+        .createUser(_emailcontroller.text, _passwordController.text)
+        .then((value) {
+      if (value == 'ok') {
+        screenLogin = true;
+        setState(() {});
       } else {
         snackBarCustom(value!);
       }
