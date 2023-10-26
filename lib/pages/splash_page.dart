@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:list_contatos_foto_dio/controllers/contacts_controller.dart';
-import 'package:list_contatos_foto_dio/models/user.dart';
 import 'package:list_contatos_foto_dio/pages/contacts_list_page.dart';
 import 'package:list_contatos_foto_dio/pages/login_page.dart';
 

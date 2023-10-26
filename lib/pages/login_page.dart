@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:list_contatos_foto_dio/controllers/contacts_controller.dart';
 import 'package:list_contatos_foto_dio/controllers/login_controller.dart';
-import 'package:list_contatos_foto_dio/core/enums/login_enum.dart';
+import 'package:list_contatos_foto_dio/shared/enums/login_enum.dart';
 import 'package:list_contatos_foto_dio/pages/contacts_list_page.dart';
 import 'package:list_contatos_foto_dio/repositories/auth_repository.dart';
 import 'package:list_contatos_foto_dio/services/auth_service.dart';
@@ -139,6 +139,16 @@ class _LoginPageState extends State<LoginPage> {
                         setState(() {});
                       },
                       child: const Text('Quero me registrar')),
+                ),
+                Visibility(
+                  visible: screenLogin == false,
+                  child: TextButton(
+                    onPressed: () {
+                      screenLogin = true;
+                      setState(() {});
+                    },
+                    child: const Text('Voltar Para Login'),
+                  ),
                 )
               ],
             ),

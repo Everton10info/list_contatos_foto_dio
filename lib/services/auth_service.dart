@@ -1,6 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:jsonwebtoken_decode/jsonwebtoken_decode.dart' as jwt;
-import 'package:list_contatos_foto_dio/core/exceptions/exceptions.dart';
+import 'package:list_contatos_foto_dio/shared/exceptions/exceptions.dart';
 import 'package:list_contatos_foto_dio/models/user.dart';
 
 class AuthService {

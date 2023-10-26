@@ -1,5 +1,5 @@
-import '../core/enums/login_enum.dart';
-import '../core/exceptions/exceptions.dart';
+import '../shared/enums/login_enum.dart';
+import '../shared/exceptions/exceptions.dart';
 import '../repositories/auth_repository.dart';
 
 class LoginController {

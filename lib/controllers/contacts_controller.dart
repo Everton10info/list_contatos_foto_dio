@@ -8,6 +8,7 @@ import '../models/contacts_model.dart';
 
 part 'contacts_controller.g.dart';
 
+// ignore: library_private_types_in_public_api
 class ControllerContacts = _ControllerContacts with _$ControllerContacts;
 
 abstract class _ControllerContacts with Store {

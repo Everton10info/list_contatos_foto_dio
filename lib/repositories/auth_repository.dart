@@ -1,4 +1,4 @@
-import '../core/enums/login_enum.dart';
+import '../shared/enums/login_enum.dart';
 import '../services/auth_service.dart';
 
 abstract interface class AuthRepository {
