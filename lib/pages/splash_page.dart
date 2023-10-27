@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:list_contatos_foto_dio/controllers/contacts_controller.dart';
-import 'package:list_contatos_foto_dio/pages/contacts_list_page.dart';
-import 'package:list_contatos_foto_dio/pages/login_page.dart';
 
+import '../controllers/contacts_controller.dart';
 import '../repositories/auth_repository.dart';
 import '../services/auth_service.dart';
+import 'contacts_list_page.dart';
+import 'login_page.dart';
 
 class SplashPage extends StatefulWidget {
   const SplashPage({super.key});

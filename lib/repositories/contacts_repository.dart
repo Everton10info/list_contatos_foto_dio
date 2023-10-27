@@ -1,5 +1,6 @@
 import 'package:list_contatos_foto_dio/models/contacts_model.dart';
 import 'package:dio/dio.dart';
+import 'package:list_contatos_foto_dio/shared/config/configs.dart';
 
 abstract interface class ContactRepopsitory {
   Future<void> createContact(ContactModel contact);
@@ -9,10 +10,10 @@ abstract interface class ContactRepopsitory {
 }
 
 class RepositoryImpl implements ContactRepopsitory {
-  final String baseUrl = 'https://parseapi.back4app.com/classes/contacts';
+  final String baseUrl = Config.baseUrl;
   final headers = {
-    'X-Parse-Application-Id': '98mIVWi5wNZ5ZS0khB8W2xkMTicUP8YSpT3Z0ARo',
-    'X-Parse-REST-API-Key': '999OoVwkJueHKI0UHd7OvYkGsAhDN7D4zLXfysPn',
+    'X-Parse-Application-Id': Config.aplicationId,
+    'X-Parse-REST-API-Key': Config.apiKey,
     'Content-Type': 'application/json'
   };
   Dio dio = Dio();
