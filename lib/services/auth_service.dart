@@ -2,10 +2,13 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:jsonwebtoken_decode/jsonwebtoken_decode.dart' as jwt;
 import 'package:list_contatos_foto_dio/shared/exceptions/exceptions.dart';
 import 'package:list_contatos_foto_dio/models/user.dart';
+import 'package:list_contatos_foto_dio/shared/utils/check_connection.dart';
 
 class AuthService {
   final firebase = FirebaseAuth.instance;
   Future<bool> signUp(emailAddress, password) async {
+    if (await CheckConnection.isConnected == false)throw AppExceptionConnect();
+
     try {
       UserCredential credential = await firebase.signInWithEmailAndPassword(
           email: emailAddress, password: password);
@@ -20,12 +23,17 @@ class AuthService {
   }
 
   Future<User> createUser(emailAddress, password) async {
+  if (await CheckConnection.isConnected == false)throw AppExceptionConnect();
+
     try {
       UserCredential credential = await firebase.createUserWithEmailAndPassword(
         email: emailAddress,
         password: password,
       );
       return credential.user!;
+    } on FirebaseAuthException catch (e) {
+      
+      throw AppExceptionUserCreate(e.code);
     } catch (_) {
       throw AppExceptionServerError();
     }

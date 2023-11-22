@@ -21,18 +21,33 @@ class AppExceptionInvalideCredencial extends AppException {
   }
 }
 
-class AppExceptionCreateError extends AppException {
-  AppExceptionCreateError();
+class AppExceptionUserCreate extends  AppException{
+  AppExceptionUserCreate(this.exception):super(exception);
+ final String exception;
+
+  
   @override
   String getMessage() {
-    return 'Erro ao criar usuário, por favor tente mais tarde';
+    if(exception =='email-already-in-use') return 'Email já utilizado';
+  
+    return 'Erro desconhecido, tente novamente mais tarde!';
   }
 }
+
+
 
 class AppExceptionServerError extends AppException {
   AppExceptionServerError();
   @override
   String getMessage() {
     return 'Erro no servidor, por favor tente mais tarde';
+  }
+}
+
+class AppExceptionConnect extends AppException {
+  AppExceptionConnect([super.message]);
+  @override
+  String getMessage() {
+    return 'Você está desconectado da internet';
   }
 }
